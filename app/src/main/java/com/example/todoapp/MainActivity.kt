@@ -1,6 +1,7 @@
 package com.example.todoapp
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,12 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todoapp.ui.theme.TodoAppTheme
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,40 +42,39 @@ fun TodoScreen() {
             .fillMaxSize()
 
     ) {
-
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                ,horizontalArrangement = Arrangement.End
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            TodoList(
-                items = items,
-                modifier = Modifier.weight(1f)
-            )
-
-            TextField(
+            OutlinedTextField(
                 value = text,
                 onValueChange = setText,
                 label = { Text("Enter a new task") },
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
             )
-
             Button(
-
                 onClick = {
                     items.add(text)
                     setText("")
                 },
-                modifier = Modifier.size(15.dp)
+                modifier = Modifier.height(56.dp)
             ) {
                 Text("Add")
             }
         }
+            TodoList(
+                items = items,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)
+            )
+        }
 
     }
-
-}
 
 @Composable
 fun TodoList(items: List<String>, modifier: Modifier = Modifier) {
